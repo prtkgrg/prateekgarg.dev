@@ -5,23 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>404 — Prateek Garg</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700&family=Geist+Mono&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
+  <style>
+    .nf { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: var(--pad); }
+    .nf h1 { font-size: clamp(6rem, 30vw, 26rem); line-height: 0.8; letter-spacing: -0.07em; margin: 0; }
+    .nf p { font-size: clamp(1.4rem, 3vw, 2.4rem); margin: 24px 0 40px; }
+    .nf a { align-self: flex-start; padding: 14px 24px; border-radius: 999px; background: var(--accent); color: var(--ink); font-weight: 600; }
+  </style>
 </head>
 <body>
-  <main class="container" style="min-height:100vh;display:flex;align-items:center;justify-content:center;">
-    <div class="terminal" style="max-width:560px;width:100%;">
-      <div class="terminal__bar">
-        <span class="dot dot--r"></span><span class="dot dot--y"></span><span class="dot dot--g"></span>
-        <span class="terminal__title">prateek@dev: ~</span>
-      </div>
-      <div class="terminal__body">
-        <p class="prompt"><span class="accent">➜</span> <span class="path">~</span> cd <span id="p">this-page</span></p>
-        <p class="mono" style="color:#ff7b72;margin:0 0 24px;">cd: no such file or directory (404)</p>
-        <a class="btn btn--primary" href="/">cd ~</a>
-      </div>
-    </div>
+  <main class="nf">
+    <h1>404</h1>
+    <p>This record never <em style="color:var(--accent-text)">synced.</em></p>
+    <a href="/">Back home →</a>
   </main>
-  <script>document.getElementById('p').textContent = location.pathname;</script>
 </body>
 </html>
