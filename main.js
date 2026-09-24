@@ -271,17 +271,34 @@
     const HQ = { lat: 23.22, lon: 72.65 };
     const hasGeo = typeof d3 !== 'undefined' && d3.geoInterpolate && typeof topojson !== 'undefined';
 
-    const markers = [...document.querySelectorAll('.deploys li')].map((li, i) => {
-      const m = { lat: +li.dataset.lat, lon: +li.dataset.lon, name: li.querySelector('.deploys__where').textContent, li, offset: i * 0.37 };
-      const far = Math.hypot(m.lat - HQ.lat, m.lon - HQ.lon) > 3;
-      m.arc = far && hasGeo ? d3.geoInterpolate([HQ.lon, HQ.lat], [m.lon, m.lat]) : null;
-      m.dist = hasGeo ? d3.geoDistance([HQ.lon, HQ.lat], [m.lon, m.lat]) : 0;
-      return m;
+    // One list row = one deployment ("group"), which can light up several points
+    // (data-lat/lon plus optional data-points="lat,lon,Label;...").
+    const markers = [];
+    const groups = [...document.querySelectorAll('.deploys li')].map((li, i) => {
+      const points = [[+li.dataset.lat, +li.dataset.lon, li.dataset.label || li.querySelector('.deploys__where').textContent]];
+      (li.dataset.points || '').split(';').filter(Boolean).forEach((s) => {
+        const [lat, lon, name] = s.split(',');
+        points.push([+lat, +lon, name]);
+      });
+      const group = {
+        li,
+        lat: points.reduce((s, p) => s + p[0], 0) / points.length,
+        lon: points.reduce((s, p) => s + p[1], 0) / points.length,
+      };
+      points.forEach(([lat, lon, name], j) => {
+        const m = { lat, lon, name, group, offset: (i + j * 0.5) * 0.37 };
+        const far = Math.hypot(lat - HQ.lat, lon - HQ.lon) > 3;
+        m.arc = far && hasGeo ? d3.geoInterpolate([HQ.lon, HQ.lat], [lon, lat]) : null;
+        m.dist = hasGeo ? d3.geoDistance([HQ.lon, HQ.lat], [lon, lat]) : 0;
+        markers.push(m);
+      });
+      return group;
     });
 
     let size = 0, R = 0, cx = 0, cy = 0, pts = [];
     let centerLon = 72, centerLat = 16, target = null, dragging = false, running = false, raf = 0;
-    const angleDiff = (a, b) => ((a - b + 540) % 360) - 180;
+    const wrap = (a) => ((((a + 180) % 360) + 360) % 360) - 180;
+    const angleDiff = (a, b) => wrap(a - b);
 
     const resize = () => {
       const dpr = Math.min(devicePixelRatio || 1, 1.5);
@@ -309,6 +326,7 @@
           centerLat += (16 - centerLat) * 0.02;
         }
       }
+      centerLon = wrap(centerLon);
 
       const fg = colors.fg, ac = colors.accent;
       ctx.clearRect(0, 0, size, size);
@@ -354,7 +372,7 @@
           const [lon, lat] = m.arc(k / N);
           path.push(project(lat, lon, 1 + Math.sin(Math.PI * k / N) * lift));
         }
-        const active = target && target.m === m;
+        const active = target && target.group === m.group;
         ctx.lineWidth = active ? 2 : 1.2;
         ctx.strokeStyle = `rgba(${ac},${active ? 0.9 : 0.45})`;
         ctx.beginPath();
@@ -389,7 +407,7 @@
         ctx.fillStyle = m.hq ? `rgb(${fg})` : `rgb(${ac})`;
         ctx.beginPath(); ctx.arc(q.x, q.y, m.hq ? 3 : 3.5, 0, Math.PI * 2); ctx.fill();
 
-        const isActive = target && target.m === m;
+        const isActive = target && m.group && target.group === m.group;
         const outside = m.lon < 65 || m.lon > 90;
         if (isActive || m.hq || outside) {
           ctx.globalAlpha = isActive ? 1 : 0.75 * q.z;
@@ -419,18 +437,18 @@
     c.addEventListener('pointercancel', endDrag);
 
     // hover a deployment → spin to it
-    markers.forEach((m) => {
+    groups.forEach((g) => {
       const focus = () => {
-        target = { lat: m.lat, lon: m.lon, m };
-        markers.forEach((o) => o.li.classList.toggle('is-active', o === m));
+        target = { lat: g.lat, lon: g.lon, group: g };
+        groups.forEach((o) => o.li.classList.toggle('is-active', o === g));
       };
-      const blur = () => { target = null; m.li.classList.remove('is-active'); };
-      m.li.addEventListener('pointerenter', focus);
-      m.li.addEventListener('pointerleave', blur);
-      m.li.addEventListener('click', focus);
-      m.li.tabIndex = 0;
-      m.li.addEventListener('focus', focus);
-      m.li.addEventListener('blur', blur);
+      const blur = () => { target = null; g.li.classList.remove('is-active'); };
+      g.li.addEventListener('pointerenter', focus);
+      g.li.addEventListener('pointerleave', blur);
+      g.li.addEventListener('click', focus);
+      g.li.tabIndex = 0;
+      g.li.addEventListener('focus', focus);
+      g.li.addEventListener('blur', blur);
     });
 
     addEventListener('resize', resize);
