@@ -537,15 +537,14 @@
       });
     }
 
-    // 300,000,000 counter, pinned and scrubbed
+    // 300,000,000 counter: plays on its own once the section comes into view
     const big = document.getElementById('bignum');
     const o = { v: 0 };
     const fmt = (n) => Math.round(n).toLocaleString('en-US');
     big.textContent = '0';
-    gsap.timeline({ scrollTrigger: { trigger: '.bignum', start: 'top top', end: '+=160%', pin: true, scrub: 0.3 } })
-      .to(o, { v: 300000000, duration: 1, ease: 'power3.in', onUpdate: () => { big.textContent = fmt(o.v); } })
-      .from('.bignum__stats > div', { y: 60, autoAlpha: 0, stagger: 0.08, duration: 0.3, ease: 'power2.out' }, 0.7)
-      .to({}, { duration: 0.25 });
+    gsap.timeline({ scrollTrigger: { trigger: '.bignum', start: 'top 65%', once: true } })
+      .to(o, { v: 300000000, duration: 2.6, ease: 'power3.inOut', onUpdate: () => { big.textContent = fmt(o.v); } })
+      .from('.bignum__stats > div', { y: 60, autoAlpha: 0, stagger: 0.1, duration: 0.9, ease: 'power3.out' }, 1.4);
 
     // Journey: horizontal scroll on desktop
     const mm = gsap.matchMedia();
@@ -560,14 +559,19 @@
         scaleX: 1, ease: 'none',
         scrollTrigger: { trigger: '.journey', start: 'top top', end: () => '+=' + dist(), scrub: true, invalidateOnRefresh: true },
       });
+      // Where a panel's left edge ends up when the horizontal scroll finishes.
+      // Entrance animations must complete by then, or the last panels stay mid-animation.
+      const finalLeft = (panel) => panel.getBoundingClientRect().left - track.getBoundingClientRect().left - dist();
+      const endAt = (panel, frac) => () => `left ${Math.max(finalLeft(panel) + 2, innerWidth * frac)}px`;
+
       gsap.utils.toArray('.panel').forEach((panel) => {
         gsap.from(panel, {
           y: 120, rotate: 5, autoAlpha: 0.2, ease: 'none',
-          scrollTrigger: { trigger: panel, containerAnimation: move, start: 'left right', end: 'left 55%', scrub: true },
+          scrollTrigger: { trigger: panel, containerAnimation: move, start: 'left right', end: endAt(panel, 0.6), scrub: true, invalidateOnRefresh: true },
         });
         gsap.from(panel.querySelector('.panel__year'), {
           xPercent: 45, ease: 'none',
-          scrollTrigger: { trigger: panel, containerAnimation: move, start: 'left right', end: 'right 40%', scrub: true },
+          scrollTrigger: { trigger: panel, containerAnimation: move, start: 'left right', end: endAt(panel, 0.45), scrub: true, invalidateOnRefresh: true },
         });
       });
     });
