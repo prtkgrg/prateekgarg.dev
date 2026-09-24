@@ -599,6 +599,69 @@ strong { font-weight: 600; }
 .contact__links a:hover { background-size: 100% 1px; background-position: 0 100%; color: var(--accent-text); }
 @media (max-width: 720px) { .contact__links { align-items: flex-start; } }
 
+.contact__btn.is-pulse { animation: btn-pulse 1.2s var(--ease) 2; }
+@keyframes btn-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 70%, transparent); }
+  100% { box-shadow: 0 0 0 28px transparent; }
+}
+
+/* =========================================================
+   "Let's talk" popover
+   ========================================================= */
+.talk {
+  position: fixed; inset: auto; margin: 0;
+  width: min(360px, calc(100vw - 32px));
+  padding: 20px; border-radius: 24px;
+  border: 1px solid var(--line);
+  background: var(--surface); color: var(--fg);
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.5);
+  /* enter / exit animation */
+  opacity: 0; transform: translateY(12px) scale(0.96);
+  transition: opacity 0.35s var(--ease), transform 0.45s var(--ease), overlay 0.35s allow-discrete, display 0.35s allow-discrete;
+}
+.talk:popover-open { opacity: 1; transform: none; }
+@starting-style { .talk:popover-open { opacity: 0; transform: translateY(12px) scale(0.96); } }
+.talk::backdrop { background: rgba(0, 0, 0, 0); transition: background 0.35s, overlay 0.35s allow-discrete, display 0.35s allow-discrete; }
+.talk:popover-open::backdrop { background: rgba(0, 0, 0, 0.25); }
+@starting-style { .talk:popover-open::backdrop { background: rgba(0, 0, 0, 0); } }
+
+.talk__head { padding: 4px 36px 14px 6px; }
+.talk__title { margin: 0; font-size: 1.6rem; font-weight: 600; letter-spacing: -0.04em; }
+.talk__sub { margin: 2px 0 0; color: var(--muted); text-transform: none; }
+.talk__item {
+  width: 100%; display: flex; align-items: center; gap: 14px;
+  padding: 12px; border-radius: 16px; border: 0;
+  background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer;
+  transition: background-color 0.2s;
+}
+.talk__item + .talk__item { margin-top: 4px; }
+.talk__item:hover, .talk__item:focus-visible { background: color-mix(in srgb, var(--fg) 7%, transparent); }
+.talk__icon {
+  flex: none; width: 44px; height: 44px; border-radius: 12px;
+  display: grid; place-items: center;
+  background: var(--accent); color: var(--ink);
+}
+.talk__icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.talk__icon--in { font-weight: 700; font-size: 1.05rem; letter-spacing: -0.02em; }
+.talk__text { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.talk__text strong { font-weight: 600; }
+.talk__text small { color: var(--muted); font-size: 0.82rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.talk__arrow { color: var(--muted); transition: transform 0.3s var(--ease), color 0.2s; }
+.talk__item:hover .talk__arrow { transform: translate(3px, -3px); color: var(--accent-text); }
+.talk__state { font: 500 0.75rem var(--mono); text-transform: uppercase; color: var(--accent-text); white-space: nowrap; }
+.talk__close {
+  position: absolute; top: 16px; right: 16px;
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer;
+}
+.talk__close:hover { color: var(--fg); border-color: var(--fg); }
+
+/* Phones: bottom sheet */
+@media (max-width: 640px) {
+  .talk { left: 12px !important; right: 12px; bottom: 12px; top: auto !important; width: auto; transform: translateY(40px); }
+  @starting-style { .talk:popover-open { transform: translateY(40px); } }
+}
+
 .footer {
   display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
   padding: 24px var(--pad); border-top: 1px solid var(--line); color: var(--muted);

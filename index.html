@@ -88,7 +88,7 @@
           </g>
         </svg>
       </button>
-      <a class="nav__cta" href="mailto:garg.prateek2209@gmail.com" data-magnetic><span>Let's talk</span></a>
+      <a class="nav__cta" href="#contact" data-magnetic><span>Let's talk</span></a>
     </div>
   </header>
 
@@ -526,7 +526,9 @@
         <li>Engineering Lead</li>
       </ul>
       <div class="contact__row">
-        <a class="contact__btn" href="mailto:garg.prateek2209@gmail.com" data-magnetic data-cursor="write">
+        <!-- Plain mailto link without JS; main.js upgrades it to open the popover below -->
+        <a class="contact__btn" id="talk-trigger" href="mailto:garg.prateek2209@gmail.com" data-magnetic data-cursor="hello"
+           aria-controls="talk">
           <span>Get in touch</span>
         </a>
         <ul class="contact__links">
@@ -537,6 +539,38 @@
       </div>
     </section>
   </main>
+
+  <!-- Contact popover (native popover API: Esc and click-outside close it) -->
+  <div class="talk" id="talk" popover role="dialog" aria-labelledby="talk-title">
+    <div class="talk__head">
+      <p class="talk__title" id="talk-title">Let's talk</p>
+      <p class="talk__sub mono">Pick whatever's easiest</p>
+    </div>
+
+    <button type="button" class="talk__item" data-copy="garg.prateek2209@gmail.com">
+      <span class="talk__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4h-7A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8"/></svg>
+      </span>
+      <span class="talk__text"><strong>Copy email</strong><small>garg.prateek2209@gmail.com</small></span>
+      <span class="talk__state" aria-live="polite"></span>
+    </button>
+
+    <a class="talk__item" href="mailto:garg.prateek2209@gmail.com?subject=Hello%20from%20prateekgarg.dev">
+      <span class="talk__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg>
+      </span>
+      <span class="talk__text"><strong>Open mail app</strong><small>Starts a new email to me</small></span>
+      <span class="talk__arrow" aria-hidden="true">↗</span>
+    </a>
+
+    <a class="talk__item" href="https://www.linkedin.com/in/prtk-grg/" target="_blank" rel="noopener">
+      <span class="talk__icon talk__icon--in" aria-hidden="true">in</span>
+      <span class="talk__text"><strong>Message on LinkedIn</strong><small>linkedin.com/in/prtk-grg</small></span>
+      <span class="talk__arrow" aria-hidden="true">↗</span>
+    </a>
+
+    <button type="button" class="talk__close" popovertarget="talk" popovertargetaction="hide" aria-label="Close">✕</button>
+  </div>
 
   <footer class="footer">
     <span class="mono">© <span id="year">2026</span> Prateek Garg</span>

@@ -118,11 +118,100 @@
       const target = id === '#top' ? 0 : document.querySelector(id);
       if (target === null) return;
       e.preventDefault();
-      if (lenis) lenis.scrollTo(target, { duration: 1.6 });
-      else if (target === 0) scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
-      else target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+      // "Let's talk" lands on Contact, then nudges the Get-in-touch button
+      const isTalk = a.classList.contains('nav__cta');
+      const done = isTalk ? pulseTalk : undefined;
+      if (lenis && isTalk) {
+        // Land with the Get-in-touch button in view, not just the section top
+        const row = document.querySelector('.contact__row');
+        const offset = -Math.max(0, innerHeight - row.offsetHeight - 80);
+        lenis.scrollTo(row, { duration: 1.6, offset, onComplete: done });
+      } else if (lenis) lenis.scrollTo(target, { duration: 1.6, onComplete: done });
+      else {
+        if (target === 0) scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+        else target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+        if (done) setTimeout(done, reduce ? 0 : 900);
+      }
     });
   });
+
+  /* ---------------------------------------------------------
+     "Let's talk" popover
+     --------------------------------------------------------- */
+  const talk = document.getElementById('talk');
+  const trigger = document.getElementById('talk-trigger');
+
+  function pulseTalk() {
+    trigger.classList.remove('is-pulse');
+    void trigger.offsetWidth; // restart the animation
+    trigger.classList.add('is-pulse');
+  }
+
+  // Only upgrade the mailto link when the browser supports the popover API.
+  if (talk && trigger && typeof talk.showPopover === 'function') {
+    trigger.setAttribute('aria-haspopup', 'dialog');
+    trigger.setAttribute('aria-expanded', 'false');
+
+    const place = () => {
+      if (innerWidth <= 640) return; // CSS turns it into a bottom sheet
+      const r = trigger.getBoundingClientRect();
+      const w = talk.offsetWidth, h = talk.offsetHeight, gap = 20;
+      let left = r.right + gap;
+      if (left + w > innerWidth - 16) left = r.left + r.width / 2 - w / 2;
+      let top = r.top + r.height / 2 - h / 2;
+      left = Math.max(16, Math.min(left, innerWidth - w - 16));
+      top = Math.max(16, Math.min(top, innerHeight - h - 16));
+      talk.style.left = left + 'px';
+      talk.style.top = top + 'px';
+    };
+
+    trigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      talk.togglePopover();
+    });
+
+    talk.addEventListener('toggle', (e) => {
+      const open = e.newState === 'open';
+      trigger.setAttribute('aria-expanded', String(open));
+      if (open) {
+        place();
+        talk.querySelector('.talk__item').focus({ preventScroll: true });
+      } else {
+        trigger.focus({ preventScroll: true });
+      }
+    });
+
+    // Scrolling the page away closes it (it's positioned against the button).
+    // Ignore small movements, e.g. smooth scroll still settling when it opens.
+    let openY = 0;
+    talk.addEventListener('toggle', (e) => { if (e.newState === 'open') openY = scrollY; });
+    addEventListener('scroll', () => {
+      if (talk.matches(':popover-open') && Math.abs(scrollY - openY) > 120) talk.hidePopover();
+    }, { passive: true });
+    addEventListener('resize', () => { if (talk.matches(':popover-open')) place(); });
+
+    // Copy email, with a fallback for browsers without the async clipboard API
+    const copyBtn = talk.querySelector('[data-copy]');
+    const state = copyBtn.querySelector('.talk__state');
+    let resetTimer = 0;
+    copyBtn.addEventListener('click', async () => {
+      const text = copyBtn.dataset.copy;
+      let ok = false;
+      try { await navigator.clipboard.writeText(text); ok = true; } catch (err) {
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { ok = document.execCommand('copy'); } catch (err2) { ok = false; }
+        ta.remove();
+      }
+      state.textContent = ok ? 'Copied ✓' : 'Copy failed';
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => { state.textContent = ''; }, 2200);
+    });
+
+    // Picking mail or LinkedIn closes the popover
+    talk.querySelectorAll('a.talk__item').forEach((a) => a.addEventListener('click', () => talk.hidePopover()));
+  }
 
   /* ---------------------------------------------------------
      Custom cursor + magnetic elements
