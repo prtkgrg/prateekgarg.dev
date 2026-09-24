@@ -606,7 +606,7 @@
     return;
   }
 
-  const fontsReady = Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 2500))]);
+  const fontsReady = Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1000))]);
 
   // Always start the story from the top.
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -619,7 +619,7 @@
   // Full loader on the first visit of a session; a quick one after that.
   let seen = false;
   try { seen = sessionStorage.getItem('intro-seen') === '1'; sessionStorage.setItem('intro-seen', '1'); } catch (e) {}
-  const loadDur = seen ? 0.5 : 1.9;
+  const loadDur = seen ? 0.3 : 0.8;
 
   const counter = { v: 0 };
   const num = document.getElementById('loader-num');
