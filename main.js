@@ -65,6 +65,22 @@
      --------------------------------------------------------- */
   document.getElementById('year').textContent = new Date().getFullYear();
 
+  // Film grain: render one small noise tile once and let CSS tile it.
+  (() => {
+    const s = 160;
+    const c = document.createElement('canvas');
+    c.width = c.height = s;
+    const x = c.getContext('2d');
+    const img = x.createImageData(s, s);
+    for (let i = 0; i < img.data.length; i += 4) {
+      const v = (Math.random() * 255) | 0;
+      img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
+      img.data[i + 3] = 255;
+    }
+    x.putImageData(img, 0, 0);
+    document.querySelector('.grain').style.backgroundImage = `url(${c.toDataURL()})`;
+  })();
+
   const clock = document.getElementById('clock');
   const fmtTime = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' });
   const tickClock = () => { clock.textContent = fmtTime.format(new Date()); };
@@ -85,7 +101,7 @@
      --------------------------------------------------------- */
   let lenis = null;
   if (!reduce && typeof Lenis !== 'undefined') {
-    lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 1 });
+    lenis = new Lenis({ lerp: 0.14, wheelMultiplier: 1 });
     if (hasGSAP) {
       lenis.on('scroll', ScrollTrigger.update);
       gsap.ticker.add((t) => lenis.raf(t * 1000));
@@ -150,12 +166,15 @@
     let w, h, nodes = [], packets = [], running = false, raf = 0;
     const mouse = { x: -9999, y: -9999 };
 
+    const BUCKETS = 4;
+    const LINK2 = LINK * LINK;
+
     const resize = () => {
-      const dpr = Math.min(devicePixelRatio || 1, 2);
+      const dpr = Math.min(devicePixelRatio || 1, 1.5);
       w = c.clientWidth; h = c.clientHeight;
       c.width = w * dpr; c.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const n = Math.min(150, Math.max(40, Math.floor((w * h) / 11000)));
+      const n = Math.min(110, Math.max(36, Math.floor((w * h) / 14000)));
       nodes = Array.from({ length: n }, () => ({
         x: Math.random() * w, y: Math.random() * h,
         vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
@@ -176,40 +195,51 @@
         if (d < 120 && d > 0) { n.x += (dx / d) * 1.2; n.y += (dy / d) * 1.2; }
       }
 
-      ctx.lineWidth = 1;
+      // Batch lines into a few opacity buckets: a handful of stroke() calls instead of thousands.
+      const links = Array.from({ length: BUCKETS }, () => new Path2D());
+      const mouseLinks = Array.from({ length: BUCKETS }, () => new Path2D());
       for (let i = 0; i < nodes.length; i++) {
         const a = nodes[i];
         for (let j = i + 1; j < nodes.length; j++) {
           const b = nodes[j];
-          const d = Math.hypot(a.x - b.x, a.y - b.y);
-          if (d > LINK) continue;
-          ctx.strokeStyle = `rgba(${fg},${(1 - d / LINK) * 0.22})`;
-          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
-          if (packets.length < 36 && Math.random() < 0.0009) packets.push({ a: i, b: j, t: 0, s: 0.008 + Math.random() * 0.012 });
+          const dx = a.x - b.x, dy = a.y - b.y, d2 = dx * dx + dy * dy;
+          if (d2 > LINK2) continue;
+          const k = Math.min(BUCKETS - 1, Math.floor((1 - Math.sqrt(d2) / LINK) * BUCKETS));
+          links[k].moveTo(a.x, a.y); links[k].lineTo(b.x, b.y);
+          if (packets.length < 30 && Math.random() < 0.0012) packets.push({ a: i, b: j, t: 0, s: 0.008 + Math.random() * 0.012 });
         }
         const dm = Math.hypot(a.x - mouse.x, a.y - mouse.y);
         if (dm < 220) {
-          ctx.strokeStyle = `rgba(${ac},${(1 - dm / 220) * 0.6})`;
-          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+          const k = Math.min(BUCKETS - 1, Math.floor((1 - dm / 220) * BUCKETS));
+          mouseLinks[k].moveTo(a.x, a.y); mouseLinks[k].lineTo(mouse.x, mouse.y);
         }
       }
-
-      for (const n of nodes) {
-        ctx.fillStyle = `rgba(${fg},0.55)`;
-        ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx.fill();
+      ctx.lineWidth = 1;
+      for (let k = 0; k < BUCKETS; k++) {
+        ctx.strokeStyle = `rgba(${fg},${((k + 1) / BUCKETS) * 0.22})`;
+        ctx.stroke(links[k]);
+        ctx.strokeStyle = `rgba(${ac},${((k + 1) / BUCKETS) * 0.6})`;
+        ctx.stroke(mouseLinks[k]);
       }
 
-      ctx.shadowColor = `rgb(${ac})`;
-      ctx.shadowBlur = 12;
-      ctx.fillStyle = `rgb(${ac})`;
+      const dots = new Path2D();
+      for (const n of nodes) { dots.moveTo(n.x + n.r, n.y); dots.arc(n.x, n.y, n.r, 0, Math.PI * 2); }
+      ctx.fillStyle = `rgba(${fg},0.55)`;
+      ctx.fill(dots);
+
+      // Packets: a soft halo + bright core (cheap stand-in for shadowBlur).
+      const halo = new Path2D(), core = new Path2D();
       packets = packets.filter((p) => {
         p.t += p.s;
         const a = nodes[p.a], b = nodes[p.b];
         if (p.t > 1 || Math.hypot(a.x - b.x, a.y - b.y) > LINK * 1.3) return false;
-        ctx.beginPath(); ctx.arc(a.x + (b.x - a.x) * p.t, a.y + (b.y - a.y) * p.t, 2.2, 0, Math.PI * 2); ctx.fill();
+        const x = a.x + (b.x - a.x) * p.t, y = a.y + (b.y - a.y) * p.t;
+        halo.moveTo(x + 6, y); halo.arc(x, y, 6, 0, Math.PI * 2);
+        core.moveTo(x + 2.2, y); core.arc(x, y, 2.2, 0, Math.PI * 2);
         return true;
       });
-      ctx.shadowBlur = 0;
+      ctx.fillStyle = `rgba(${ac},0.18)`; ctx.fill(halo);
+      ctx.fillStyle = `rgb(${ac})`; ctx.fill(core);
 
       if (running) raf = requestAnimationFrame(frame);
     };
@@ -254,7 +284,7 @@
     const angleDiff = (a, b) => ((a - b + 540) % 360) - 180;
 
     const resize = () => {
-      const dpr = Math.min(devicePixelRatio || 1, 2);
+      const dpr = Math.min(devicePixelRatio || 1, 1.5);
       size = c.clientWidth;
       c.width = c.height = size * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -296,18 +326,21 @@
 
       // land dots
       const p0 = centerLat * deg, s0 = Math.sin(p0), c0 = Math.cos(p0);
+      // Dots batched into depth buckets: 5 fills per frame instead of thousands.
       const dot = Math.max(1.2, size / 380);
-      ctx.fillStyle = `rgb(${fg})`;
+      const layers = [new Path2D(), new Path2D(), new Path2D(), new Path2D(), new Path2D()];
       for (const p of pts) {
         const l = (p[1] - centerLon) * deg;
         const x0 = p[2] * Math.sin(l), z0 = p[2] * Math.cos(l);
         const z1 = p[3] * s0 + z0 * c0;
         if (z1 <= 0) continue;
         const y1 = p[3] * c0 - z0 * s0;
-        ctx.globalAlpha = 0.12 + z1 * 0.6;
-        const r = dot * (0.6 + z1 * 0.6);
-        ctx.fillRect(cx + R * x0 - r / 2, cy - R * y1 - r / 2, r, r);
+        const k = Math.min(4, (z1 * 5) | 0);
+        const r = dot * (0.6 + (k + 1) * 0.12);
+        layers[k].rect(cx + R * x0 - r / 2, cy - R * y1 - r / 2, r, r);
       }
+      ctx.fillStyle = `rgb(${fg})`;
+      layers.forEach((layer, k) => { ctx.globalAlpha = 0.12 + ((k + 1) / 5) * 0.6; ctx.fill(layer); });
       ctx.globalAlpha = 1;
 
       // arcs from HQ with travelling packets
@@ -336,10 +369,10 @@
         const head = ((t * 0.35 + m.offset) % 1);
         const q = path[Math.round(head * N)];
         if (visible(q)) {
-          ctx.shadowColor = `rgb(${ac})`; ctx.shadowBlur = 14;
+          ctx.fillStyle = `rgba(${ac},0.2)`;
+          ctx.beginPath(); ctx.arc(q.x, q.y, 7, 0, Math.PI * 2); ctx.fill();
           ctx.fillStyle = `rgb(${ac})`;
           ctx.beginPath(); ctx.arc(q.x, q.y, 2.6, 0, Math.PI * 2); ctx.fill();
-          ctx.shadowBlur = 0;
         }
       }
 
@@ -509,7 +542,7 @@
     const o = { v: 0 };
     const fmt = (n) => Math.round(n).toLocaleString('en-US');
     big.textContent = '0';
-    gsap.timeline({ scrollTrigger: { trigger: '.bignum', start: 'top top', end: '+=160%', pin: true, scrub: 0.6 } })
+    gsap.timeline({ scrollTrigger: { trigger: '.bignum', start: 'top top', end: '+=160%', pin: true, scrub: 0.3 } })
       .to(o, { v: 300000000, duration: 1, ease: 'power3.in', onUpdate: () => { big.textContent = fmt(o.v); } })
       .from('.bignum__stats > div', { y: 60, autoAlpha: 0, stagger: 0.08, duration: 0.3, ease: 'power2.out' }, 0.7)
       .to({}, { duration: 0.25 });
@@ -521,7 +554,7 @@
       const dist = () => track.scrollWidth - innerWidth;
       const move = gsap.to(track, {
         x: () => -dist(), ease: 'none',
-        scrollTrigger: { trigger: '.journey', start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 0.8, invalidateOnRefresh: true },
+        scrollTrigger: { trigger: '.journey', start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 0.4, invalidateOnRefresh: true },
       });
       gsap.to('.journey__progress span', {
         scaleX: 1, ease: 'none',
@@ -571,15 +604,18 @@
       const dir = Number(m.dataset.dir) || 1;
       loops.push(gsap.fromTo(inner, { xPercent: dir > 0 ? 0 : -50 }, { xPercent: dir > 0 ? -50 : 0, duration: 38, ease: 'none', repeat: -1 }));
     });
+    // One shared boost value eased on the ticker (no tweens created per scroll event).
+    let boost = 1, marqueeOn = false;
     ScrollTrigger.create({
       trigger: '.toolkit', start: 'top bottom', end: 'bottom top',
-      onUpdate: (self) => {
-        const boost = 1 + Math.min(Math.abs(self.getVelocity()) / 250, 8);
-        loops.forEach((tw) => {
-          gsap.to(tw, { timeScale: boost, duration: 0.2, overwrite: true,
-            onComplete: () => gsap.to(tw, { timeScale: 1, duration: 1.4, ease: 'power2.out' }) });
-        });
-      },
+      onToggle: (self) => { marqueeOn = self.isActive; loops.forEach((tw) => tw.paused(!marqueeOn)); },
+      onUpdate: (self) => { boost = Math.max(boost, 1 + Math.min(Math.abs(self.getVelocity()) / 250, 8)); },
+    });
+    loops.forEach((tw) => tw.pause());
+    gsap.ticker.add(() => {
+      if (!marqueeOn) return;
+      boost += (1 - boost) * 0.05;
+      loops.forEach((tw) => tw.timeScale(boost));
     });
 
     // Headings reveal line by line
