@@ -46,7 +46,7 @@ $g.DrawString('Garg', $big, $white, 58, 262)
 $g.DrawString('*', (New-Object System.Drawing.Font 'Segoe UI', 84, ([System.Drawing.FontStyle]::Bold), ([System.Drawing.GraphicsUnit]::Pixel)), $lime, 330, 262)
 $body = New-Object System.Drawing.Font 'Segoe UI', 27, ([System.Drawing.FontStyle]::Regular), ([System.Drawing.GraphicsUnit]::Pixel)
 $g.DrawString('Hands-on lead. Offline-first Java and Flutter', $body, $muted, 72, 430)
-$g.DrawString('systems at national scale. Team of 10+ engineers.', $body, $muted, 72, 466)
+$g.DrawString('systems at scale. Lead 10+ in a 40-engineer group.', $body, $muted, 72, 466)
 
 $pill = New-Object System.Drawing.Drawing2D.GraphicsPath
 $pill.AddArc(72, 530, 44, 44, 90, 180); $pill.AddArc(330, 530, 44, 44, 270, 180); $pill.CloseFigure()
