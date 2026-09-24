@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 — Prateek Garg</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="container" style="min-height:100vh;display:flex;align-items:center;justify-content:center;">
+    <div class="terminal" style="max-width:560px;width:100%;">
+      <div class="terminal__bar">
+        <span class="dot dot--r"></span><span class="dot dot--y"></span><span class="dot dot--g"></span>
+        <span class="terminal__title">prateek@dev: ~</span>
+      </div>
+      <div class="terminal__body">
+        <p class="prompt"><span class="accent">➜</span> <span class="path">~</span> cd <span id="p">this-page</span></p>
+        <p class="mono" style="color:#ff7b72;margin:0 0 24px;">cd: no such file or directory (404)</p>
+        <a class="btn btn--primary" href="/">cd ~</a>
+      </div>
+    </div>
+  </main>
+  <script>document.getElementById('p').textContent = location.pathname;</script>
+</body>
+</html>
