@@ -389,11 +389,18 @@ strong { font-weight: 600; }
 .deploys__name { font-weight: 600; font-size: 1.1rem; transition: color 0.3s; }
 .deploys__where { color: var(--muted); }
 .deploys .mono { color: var(--muted); }
-.reach__globe { position: relative; }
-#globe { width: 100%; aspect-ratio: 1; display: block; cursor: grab; touch-action: pan-y; }
+.reach { align-items: start; }
+.reach__globe { position: sticky; top: max(72px, 10vh); }
+#globe { width: min(100%, 68vh); aspect-ratio: 1; display: block; margin: 0 auto; cursor: grab; touch-action: pan-y; }
 #globe:active { cursor: grabbing; }
-.reach__hint { text-align: center; color: var(--muted); margin: 8px 0 0; }
-@media (max-width: 900px) { .reach { grid-template-columns: 1fr; } .reach__globe { order: -1; max-width: 520px; margin: 0 auto; width: 100%; } }
+.reach__caption { min-height: 4.8em; max-width: 520px; margin: 8px auto 0; text-align: center; }
+.reach__hint { color: var(--muted); margin: 0; }
+.reach__desc { margin: 0; font-size: 0.98rem; line-height: 1.5; color: var(--muted); animation: caption-in 0.4s var(--ease); }
+.reach__desc strong { color: var(--accent-text); font-weight: 600; }
+@keyframes caption-in { from { opacity: 0; transform: translateY(8px); } }
+.deploys a.mono { color: var(--muted); transition: color 0.2s; }
+.deploys a.mono:hover { color: var(--accent-text); }
+@media (max-width: 900px) { .reach { grid-template-columns: 1fr; } .reach__globe { position: relative; top: auto; order: -1; max-width: 520px; margin: 0 auto; width: 100%; } }
 
 /* =========================================================
    Toolkit (marquee)

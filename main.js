@@ -437,12 +437,25 @@
     c.addEventListener('pointercancel', endDrag);
 
     // hover a deployment → spin to it
+    const caption = document.querySelector('.reach__caption');
+    const hint = caption.innerHTML;
+    const showCaption = (g) => {
+      const name = g.li.querySelector('.deploys__name').textContent;
+      const p = document.createElement('p');
+      p.className = 'reach__desc';
+      const strong = document.createElement('strong');
+      strong.textContent = name;
+      p.append(strong, ' ' + (g.li.dataset.desc || ''));
+      caption.replaceChildren(p);
+    };
+
     groups.forEach((g) => {
       const focus = () => {
         target = { lat: g.lat, lon: g.lon, group: g };
         groups.forEach((o) => o.li.classList.toggle('is-active', o === g));
+        showCaption(g);
       };
-      const blur = () => { target = null; g.li.classList.remove('is-active'); };
+      const blur = () => { target = null; g.li.classList.remove('is-active'); caption.innerHTML = hint; };
       g.li.addEventListener('pointerenter', focus);
       g.li.addEventListener('pointerleave', blur);
       g.li.addEventListener('click', focus);
