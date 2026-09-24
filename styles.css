@@ -460,6 +460,23 @@ strong { font-weight: 600; }
 @media (max-width: 800px) { .rules li { grid-template-columns: 1fr; gap: 10px; } }
 
 /* =========================================================
+   Testimonial
+   ========================================================= */
+.quote { padding: clamp(80px, 14vh, 160px) var(--pad); }
+.quote__body { margin: 0; max-width: 1200px; }
+.quote__text {
+  margin: 0;
+  font: italic 400 clamp(2rem, 4.6vw, 4.4rem)/1.08 var(--serif);
+  letter-spacing: -0.015em;
+}
+.quote__text em { font-style: normal; font-family: var(--sans); font-weight: 600; letter-spacing: -0.04em; color: var(--accent-text); font-size: 0.86em; }
+.quote__by { display: flex; flex-direction: column; gap: 6px; margin-top: clamp(28px, 5vh, 56px); padding-left: 20px; border-left: 2px solid var(--accent); }
+.quote__name { font-weight: 600; font-size: 1.15rem; }
+.quote__by .mono { color: var(--muted); text-transform: none; }
+.quote__link { margin-top: 6px; }
+.quote__link:hover { color: var(--accent-text) !important; }
+
+/* =========================================================
    Side project
    ========================================================= */
 .side {
@@ -492,7 +509,9 @@ strong { font-weight: 600; }
   display: grid; grid-template-columns: 1fr 1.1fr; gap: 4vw; align-items: center;
   padding: clamp(100px, 16vh, 180px) var(--pad);
 }
-.reach .display { max-width: 12ch; margin-bottom: 40px; }
+.reach .display { max-width: 12ch; margin-bottom: 20px; }
+.reach__note { margin: 0 0 36px; color: var(--muted); max-width: 44ch; }
+.reach__note strong { color: var(--fg); }
 .deploys { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
 .deploys li {
   display: grid; grid-template-columns: 1fr 1fr auto; gap: 16px; align-items: baseline;

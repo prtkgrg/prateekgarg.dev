@@ -573,12 +573,13 @@
     gsap.to('.hero__canvas', { yPercent: 20, autoAlpha: 0.2, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
 
     // Manifesto: words light up as you read
-    const manifesto = document.querySelector('[data-words]');
     if (hasSplit) {
-      const split = SplitText.create(manifesto, { type: 'words' });
-      gsap.fromTo(split.words, { opacity: 0.12 }, {
-        opacity: 1, ease: 'none', stagger: 0.1,
-        scrollTrigger: { trigger: manifesto, start: 'top 80%', end: 'bottom 50%', scrub: true },
+      document.querySelectorAll('[data-words]').forEach((el) => {
+        const split = SplitText.create(el, { type: 'words' });
+        gsap.fromTo(split.words, { opacity: 0.12 }, {
+          opacity: 1, ease: 'none', stagger: 0.1,
+          scrollTrigger: { trigger: el, start: 'top 80%', end: 'bottom 50%', scrub: true },
+        });
       });
     }
 
