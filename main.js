@@ -654,7 +654,7 @@
 
     // Expertise pillars rise in one after another
     gsap.from('.pillar', {
-      y: 80, autoAlpha: 0, rotate: 2, stagger: 0.12, duration: 1.1, ease: 'expo.out',
+      y: 80, autoAlpha: 0, stagger: 0.12, duration: 1.1, ease: 'expo.out',
       scrollTrigger: { trigger: '.pillars', start: 'top 80%' },
     });
 

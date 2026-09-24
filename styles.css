@@ -314,9 +314,9 @@ strong { font-weight: 600; }
   position: relative; display: flex; flex-direction: column; gap: 14px;
   padding: clamp(22px, 2.4vw, 32px);
   border: 1px solid var(--line); border-radius: 24px; background: var(--surface);
-  transition: transform 0.5s var(--ease), border-color 0.3s;
+  transition: translate 0.5s var(--ease), border-color 0.3s;
 }
-.pillar:hover { transform: translateY(-6px); border-color: var(--accent-text); }
+.pillar:hover { translate: 0 -6px; border-color: var(--accent-text); }
 .pillar__num { color: var(--accent-text); }
 .pillar h3 { margin: 0; font-size: clamp(1.3rem, 1.8vw, 1.7rem); letter-spacing: -0.03em; line-height: 1.1; font-weight: 600; }
 .pillar > p { margin: 0; color: var(--muted); font-size: 0.97rem; }
@@ -467,9 +467,9 @@ strong { font-weight: 600; }
   margin: clamp(40px, 8vh, 80px) var(--pad) 0;
   padding: clamp(24px, 3vw, 40px);
   border: 1px solid var(--line); border-radius: 28px; background: var(--surface);
-  transition: border-color 0.3s, transform 0.5s var(--ease);
+  transition: border-color 0.3s, translate 0.5s var(--ease);
 }
-.side:hover { border-color: var(--accent-text); transform: translateY(-4px); }
+.side:hover { border-color: var(--accent-text); translate: 0 -4px; }
 .side__tag { color: var(--accent-text); margin: 0; }
 .side h3 { margin: 0 0 8px; font-size: clamp(1.6rem, 3vw, 2.6rem); letter-spacing: -0.04em; font-weight: 600; }
 .side__body p { margin: 0; color: var(--muted); max-width: 60ch; }
