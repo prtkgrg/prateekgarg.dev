@@ -652,6 +652,23 @@
       });
     });
 
+    // Expertise pillars rise in one after another
+    gsap.from('.pillar', {
+      y: 80, autoAlpha: 0, rotate: 2, stagger: 0.12, duration: 1.1, ease: 'expo.out',
+      scrollTrigger: { trigger: '.pillars', start: 'top 80%' },
+    });
+
+    // Principles: each rule slides in with its own line
+    gsap.utils.toArray('.rules li').forEach((li) => {
+      gsap.from(li.children, {
+        y: 40, autoAlpha: 0, stagger: 0.08, duration: 1, ease: 'power3.out',
+        scrollTrigger: { trigger: li, start: 'top 85%' },
+      });
+    });
+
+    gsap.from('.side', { y: 60, autoAlpha: 0, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: '.side', start: 'top 88%' } });
+    gsap.from('.contact__roles li', { y: 20, autoAlpha: 0, stagger: 0.06, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: '.contact__roles', start: 'top 90%' } });
+
     // Globe entrance
     gsap.from('#globe', { scale: 0.7, rotate: -20, autoAlpha: 0, duration: 1.6, ease: 'expo.out', scrollTrigger: { trigger: '.reach', start: 'top 70%' } });
     gsap.from('.deploys li', { x: -40, autoAlpha: 0, stagger: 0.06, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: '.deploys', start: 'top 85%' } });
@@ -696,7 +713,7 @@
 
     // Active nav link
     const links = [...document.querySelectorAll('.nav__links a')];
-    ['about', 'journey', 'work', 'reach', 'contact'].forEach((id) => {
+    ['about', 'expertise', 'work', 'journey', 'contact'].forEach((id) => {
       ScrollTrigger.create({
         trigger: '#' + id, start: 'top center', end: 'bottom center',
         onToggle: (self) => { if (self.isActive) links.forEach((a) => a.classList.toggle('is-active', a.getAttribute('href') === '#' + id)); },

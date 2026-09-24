@@ -297,6 +297,40 @@ strong { font-weight: 600; }
   .portrait { position: relative; top: auto; max-width: 320px; }
 }
 
+.hero__open {
+  margin-left: 8px; padding: 4px 10px; border-radius: 999px;
+  border: 1px solid var(--accent-text); color: var(--accent-text);
+  font-size: 0.7rem; white-space: nowrap;
+}
+@media (max-width: 520px) { .hero__eyebrow { flex-wrap: wrap; } .hero__open { margin-left: 22px; } }
+
+/* =========================================================
+   Expertise (four pillars)
+   ========================================================= */
+.expertise { padding: clamp(60px, 10vh, 120px) var(--pad) clamp(40px, 8vh, 100px); }
+.expertise .display { max-width: 14ch; margin-bottom: clamp(40px, 7vh, 80px); }
+.pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.pillar {
+  position: relative; display: flex; flex-direction: column; gap: 14px;
+  padding: clamp(22px, 2.4vw, 32px);
+  border: 1px solid var(--line); border-radius: 24px; background: var(--surface);
+  transition: transform 0.5s var(--ease), border-color 0.3s;
+}
+.pillar:hover { transform: translateY(-6px); border-color: var(--accent-text); }
+.pillar__num { color: var(--accent-text); }
+.pillar h3 { margin: 0; font-size: clamp(1.3rem, 1.8vw, 1.7rem); letter-spacing: -0.03em; line-height: 1.1; font-weight: 600; }
+.pillar > p { margin: 0; color: var(--muted); font-size: 0.97rem; }
+.pillar .pillar__proof { color: var(--fg); padding-top: 14px; border-top: 1px dashed var(--line); }
+.pillar__proof .mono { display: block; color: var(--accent-text); margin-bottom: 4px; font-size: 0.7rem; }
+.pillar .chips { margin-top: auto; padding-top: 8px; }
+.pillar--accent { background: var(--accent); color: var(--ink); border-color: transparent; }
+.pillar--accent > p, .pillar--accent .pillar__proof { color: rgba(10, 11, 13, 0.75); }
+.pillar--accent .pillar__num, .pillar--accent .pillar__proof .mono { color: var(--ink); }
+.pillar--accent .pillar__proof { border-top-color: rgba(10, 11, 13, 0.2); }
+.pillar--accent:hover { border-color: transparent; }
+@media (max-width: 1100px) { .pillars { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .pillars { grid-template-columns: 1fr; } }
+
 /* =========================================================
    Big number
    ========================================================= */
@@ -402,6 +436,47 @@ strong { font-weight: 600; }
 .card--lime { background: var(--accent); color: var(--ink); border-color: transparent; }
 .card--light { background: var(--inv-bg); color: var(--inv-fg); border-color: transparent; }
 
+.case { display: grid; grid-template-columns: auto 1fr; gap: 10px 18px; margin: 0 0 24px; font-size: clamp(0.95rem, 1.15vw, 1.08rem); line-height: 1.45; }
+.case dt { font: 500 0.72rem/1.9 var(--mono); text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.6; }
+.case dd { margin: 0; opacity: 0.88; }
+.case dd:last-of-type { opacity: 1; font-weight: 600; }
+
+/* =========================================================
+   Principles
+   ========================================================= */
+.principles { padding: clamp(80px, 14vh, 160px) var(--pad) clamp(40px, 8vh, 100px); }
+.principles .display { margin-bottom: clamp(32px, 6vh, 72px); }
+.rules { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.rules li {
+  display: grid; grid-template-columns: 80px 1.3fr 1fr; gap: 24px; align-items: baseline;
+  padding: clamp(24px, 4vh, 40px) 0; border-bottom: 1px solid var(--line);
+  transition: padding 0.5s var(--ease);
+}
+.rules li:hover { padding-left: 16px; }
+.rules__n { font: 500 0.85rem var(--mono); color: var(--accent-text); }
+.rules h3 { margin: 0; font-size: clamp(1.6rem, 3.4vw, 3rem); letter-spacing: -0.04em; line-height: 1.02; font-weight: 600; }
+.rules h3 em { color: var(--accent-text); }
+.rules p { margin: 0; color: var(--muted); font-size: clamp(0.98rem, 1.2vw, 1.12rem); }
+@media (max-width: 800px) { .rules li { grid-template-columns: 1fr; gap: 10px; } }
+
+/* =========================================================
+   Side project
+   ========================================================= */
+.side {
+  position: relative; display: grid; grid-template-columns: 220px 1fr auto; gap: 24px 40px; align-items: center;
+  margin: clamp(40px, 8vh, 80px) var(--pad) 0;
+  padding: clamp(24px, 3vw, 40px);
+  border: 1px solid var(--line); border-radius: 28px; background: var(--surface);
+  transition: border-color 0.3s, transform 0.5s var(--ease);
+}
+.side:hover { border-color: var(--accent-text); transform: translateY(-4px); }
+.side__tag { color: var(--accent-text); margin: 0; }
+.side h3 { margin: 0 0 8px; font-size: clamp(1.6rem, 3vw, 2.6rem); letter-spacing: -0.04em; font-weight: 600; }
+.side__body p { margin: 0; color: var(--muted); max-width: 60ch; }
+.side__arrow { position: absolute; top: 20px; right: 24px; font-size: 1.4rem; color: var(--accent-text); transition: transform 0.4s var(--ease); }
+.side:hover .side__arrow { transform: translate(4px, -4px); }
+@media (max-width: 900px) { .side { grid-template-columns: 1fr; } }
+
 .chips { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .chips li { font: 500 0.75rem var(--mono); text-transform: uppercase; padding: 6px 12px; border-radius: 999px; border: 1px solid color-mix(in srgb, currentColor 25%, transparent); }
 
@@ -477,6 +552,9 @@ strong { font-weight: 600; }
 .contact { padding: clamp(100px, 18vh, 200px) var(--pad) clamp(60px, 10vh, 120px); }
 .contact__title { margin: 0; font-size: clamp(3rem, 10.5vw, 11rem); line-height: 0.9; letter-spacing: -0.06em; font-weight: 700; max-width: 12ch; }
 .contact__title em { color: var(--accent-text); }
+.contact__lead { margin: clamp(24px, 4vh, 40px) 0 20px; font-size: clamp(1.1rem, 1.8vw, 1.5rem); max-width: 40ch; }
+.contact__roles { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.contact__roles li { font: 500 0.8rem var(--mono); text-transform: uppercase; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); }
 .contact__row { display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; margin-top: clamp(40px, 8vh, 96px); }
 .contact__btn {
   position: relative; overflow: hidden;
