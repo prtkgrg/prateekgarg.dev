@@ -582,6 +582,17 @@
       });
     }
 
+    // Portrait: unveils from the bottom, then drifts with scroll
+    gsap.from('.portrait__frame', {
+      clipPath: 'inset(100% 0% 0% 0% round 28px)', duration: 1.4, ease: 'expo.inOut',
+      scrollTrigger: { trigger: '.portrait', start: 'top 80%' },
+    });
+    gsap.fromTo('.portrait__frame img', { yPercent: -6 }, {
+      yPercent: 6, ease: 'none',
+      scrollTrigger: { trigger: '.manifesto', start: 'top bottom', end: 'bottom top', scrub: true },
+    });
+    gsap.from('.portrait figcaption', { y: 20, autoAlpha: 0, duration: 0.9, delay: 0.6, ease: 'power3.out', scrollTrigger: { trigger: '.portrait', start: 'top 80%' } });
+
     // 300,000,000 counter: plays on its own once the section comes into view
     const big = document.getElementById('bignum');
     const o = { v: 0 };

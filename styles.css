@@ -257,6 +257,46 @@ strong { font-weight: 600; }
 }
 .manifesto__text em { color: var(--accent-text); }
 
+.manifesto__grid { display: grid; grid-template-columns: minmax(240px, 0.8fr) 2fr; gap: clamp(32px, 5vw, 80px); align-items: start; }
+.manifesto__grid .manifesto__text { font-size: clamp(1.8rem, 3.6vw, 3.6rem); }
+
+.portrait { margin: 0; position: sticky; top: 110px; }
+.portrait__frame {
+  position: relative; overflow: hidden;
+  border-radius: 28px;
+  aspect-ratio: 4 / 5;
+  background: var(--surface);
+}
+.portrait__frame img {
+  display: block; width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(1) contrast(1.08) brightness(0.95);
+  transform: scale(1.12);
+  transition: filter 0.8s var(--ease);
+  will-change: transform;
+}
+/* Lime wash that lifts off on hover, revealing the colour photo */
+.portrait__frame::after {
+  content: ""; position: absolute; inset: 0;
+  background: var(--accent);
+  mix-blend-mode: multiply; opacity: 0.35;
+  transition: opacity 0.8s var(--ease);
+  pointer-events: none;
+}
+.portrait:hover img { filter: grayscale(0) contrast(1) brightness(1); }
+.portrait:hover .portrait__frame::after { opacity: 0; }
+/* Touch screens can't hover, so show the colour photo there */
+@media (hover: none) {
+  .portrait__frame img { filter: none; }
+  .portrait__frame::after { opacity: 0; }
+}
+.portrait figcaption { display: flex; align-items: center; gap: 10px; margin-top: 14px; color: var(--muted); }
+.portrait .pulse { width: 8px; height: 8px; }
+
+@media (max-width: 800px) {
+  .manifesto__grid { grid-template-columns: 1fr; }
+  .portrait { position: relative; top: auto; max-width: 320px; }
+}
+
 /* =========================================================
    Big number
    ========================================================= */
