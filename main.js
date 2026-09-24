@@ -263,7 +263,7 @@
   /* ---------------------------------------------------------
      Globe
      --------------------------------------------------------- */
-  (async function globe() {
+  (function globe() {
     const c = document.getElementById('globe');
     if (!c) return;
     const ctx = c.getContext('2d');
@@ -456,8 +456,9 @@
         showCaption(g);
       };
       const blur = () => { target = null; g.li.classList.remove('is-active'); caption.innerHTML = hint; };
-      g.li.addEventListener('pointerenter', focus);
-      g.li.addEventListener('pointerleave', blur);
+      // Mouse only: on touch, pointerleave fires right after a tap and would undo it.
+      g.li.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') focus(); });
+      g.li.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') blur(); });
       g.li.addEventListener('click', focus);
       g.li.tabIndex = 0;
       g.li.addEventListener('focus', focus);
@@ -467,8 +468,9 @@
     addEventListener('resize', resize);
     resize();
 
-    // sample land into dots
-    if (hasGeo) {
+    // Sample land into dots. Fetched only when the globe is about to scroll into view.
+    const loadLand = async () => {
+      if (!hasGeo) return;
       try {
         const topo = await (await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json')).json();
         const land = topojson.feature(topo, topo.objects.land);
@@ -489,7 +491,14 @@
           }
         }
       } catch (e) { /* globe still renders markers without land dots */ }
-    }
+      if (!running) draw(performance.now());
+    };
+    const nearby = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      nearby.disconnect();
+      loadLand();
+    }, { rootMargin: '1200px 0px' });
+    nearby.observe(c);
 
     new IntersectionObserver(([entry]) => {
       running = entry.isIntersecting;
@@ -518,11 +527,16 @@
   gsap.set('.hero__inner, .scroll-hint', { autoAlpha: 0 });
   lenis && lenis.stop();
 
+  // Full loader on the first visit of a session; a quick one after that.
+  let seen = false;
+  try { seen = sessionStorage.getItem('intro-seen') === '1'; sessionStorage.setItem('intro-seen', '1'); } catch (e) {}
+  const loadDur = seen ? 0.5 : 1.9;
+
   const counter = { v: 0 };
   const num = document.getElementById('loader-num');
   const loadTl = gsap.timeline()
-    .to(counter, { v: 100, duration: 1.9, ease: 'power2.inOut', onUpdate: () => { num.textContent = Math.round(counter.v); } })
-    .to('.loader__bar span', { scaleX: 1, duration: 1.9, ease: 'power2.inOut' }, 0);
+    .to(counter, { v: 100, duration: loadDur, ease: 'power2.inOut', onUpdate: () => { num.textContent = Math.round(counter.v); } })
+    .to('.loader__bar span', { scaleX: 1, duration: loadDur, ease: 'power2.inOut' }, 0);
 
   fontsReady.then(() => {
     loadTl.then(() => {

@@ -13,7 +13,26 @@
   <meta property="og:url" content="https://prateekgarg.dev/">
   <meta property="og:title" content="Prateek Garg — Technical Lead & Platform Architect">
   <meta property="og:description" content="I build health software that reaches 300 million people.">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://prateekgarg.dev/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Prateek Garg — Technical Lead and Platform Architect">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://prateekgarg.dev/og-image.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Prateek Garg",
+    "url": "https://prateekgarg.dev/",
+    "jobTitle": "Technical Lead",
+    "worksFor": { "@type": "Organization", "name": "Argusoft India Ltd" },
+    "alumniOf": { "@type": "CollegeOrUniversity", "name": "Gandhi Institute of Technological Advancement" },
+    "knowsAbout": ["Java", "Spring Boot", "Flutter", "Dart", "PostgreSQL", "FHIR", "Offline-first systems", "Digital health"],
+    "sameAs": ["https://linkedin.com/in/prtk-grg", "https://github.com/prtkgrg"]
+  }
+  </script>
 
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -82,8 +101,9 @@
       <div class="hero__inner">
         <div class="hero__eyebrow">
           <span class="pulse" aria-hidden="true"></span>
-          <span class="roles" aria-label="Technical Lead, Platform Architect, Flutter and Spring engineer, Mentor">
-            <span class="roles__track">
+          <span class="roles">
+            <span class="sr-only">Technical Lead, Platform Architect, Flutter and Spring engineer, mentor to 10+ engineers</span>
+            <span class="roles__track" aria-hidden="true">
               <span>Technical Lead</span>
               <span>Platform Architect</span>
               <span>Flutter × Spring engineer</span>
@@ -124,7 +144,7 @@
         <em>where the network doesn't.</em> Offline-first apps on low-end phones. Forms that are
         <em>configured, not coded.</em> Voice that turns four minutes of typing into
         <em>twenty seconds.</em> And a team of forty engineers who ship it to
-        <em>eight deployments</em> across four continents.
+        <em>eleven deployments</em> across four continents.
       </p>
     </section>
 
@@ -136,7 +156,7 @@
         <div class="bignum__stats">
           <div><span class="bignum__n">250K+</span><span class="mono">health workers daily</span></div>
           <div><span class="bignum__n">1M+</span><span class="mono">health services a day</span></div>
-          <div><span class="bignum__n">8</span><span class="mono">deployments</span></div>
+          <div><span class="bignum__n">11</span><span class="mono">deployments</span></div>
           <div><span class="bignum__n">99%</span><span class="mono">of registered children immunised in Gujarat</span></div>
         </div>
       </div>
@@ -183,7 +203,7 @@
           <span class="panel__year">2023</span>
           <div class="panel__body">
             <p class="mono panel__tag">Group Lead, Technology</p>
-            <h3>40+ engineers, 8 deployments</h3>
+            <h3>40+ engineers, 11 deployments</h3>
             <p>Designed the configuration-driven platform, led the migration from Android to Flutter, and own delivery for government and NGO clients.</p>
           </div>
         </article>
@@ -213,7 +233,7 @@
             <p class="card__metric">1<small>day</small></p>
             <div>
               <h3>Configuration-driven form engine</h3>
-              <p>A form configurator and renderer that launches new deployments without code changes. A new form takes a day and a new state takes a week. This is how MEDplat grew to 8 deployments.</p>
+              <p>A form configurator and renderer that launches new deployments without code changes. A new form takes a day and a new state takes a week. This is how MEDplat grew to 11 deployments.</p>
               <ul class="chips"><li>Dynamic forms</li><li>Rule engine</li><li>Spring Boot</li><li>Flutter</li></ul>
             </div>
           </div>
@@ -249,7 +269,7 @@
             <p class="card__metric">1<small>codebase</small></p>
             <div>
               <h3>Android → Flutter migration</h3>
-              <p>One Flutter codebase with a shared design system, multi-flavor builds and Jenkins pipelines. All 8 deployments can release independently.</p>
+              <p>One Flutter codebase with a shared design system, multi-flavor builds and Jenkins pipelines. Every deployment can release independently.</p>
               <ul class="chips"><li>Design system</li><li>Multi-flavor</li><li>pub.dev packages</li></ul>
             </div>
           </div>
@@ -323,7 +343,7 @@
         </ul>
       </div>
       <div class="reach__globe">
-        <canvas id="globe" aria-label="Rotating globe showing MEDplat deployments in India, Cambodia, Zambia, Nigeria and Jamaica" role="img"></canvas>
+        <canvas id="globe" aria-label="Rotating globe with arcs from Gujarat to each deployment listed alongside" role="img"></canvas>
         <div class="reach__caption" aria-live="polite">
           <p class="mono reach__hint">drag to spin · hover a deployment</p>
         </div>
