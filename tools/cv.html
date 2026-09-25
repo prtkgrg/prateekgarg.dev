@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Prateek Garg — CV</title>
+<!-- Source for /cv.pdf. Regenerate with: powershell -File tools\make-cv.ps1 -->
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 13mm 14mm 12mm; }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { margin: 0; font-family: Geist, "Segoe UI", Arial, sans-serif; font-size: 9.4pt; line-height: 1.42; color: #16181c; }
+  a { color: inherit; text-decoration: none; }
+  .mono { font-family: "Geist Mono", Consolas, monospace; }
+  header { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; padding-bottom: 9px; border-bottom: 2px solid #16181c; }
+  h1 { font-size: 25pt; font-weight: 700; letter-spacing: -0.02em; margin: 0; line-height: 1; }
+  h1 span { color: #5a8f00; }
+  .contact { white-space: nowrap; }
+  .title { font-size: 10pt; font-weight: 500; margin: 6px 0 0; }
+  .contact { text-align: right; font-size: 8.4pt; line-height: 1.6; }
+  .contact .open { display: inline-block; margin-top: 3px; padding: 1px 8px; border-radius: 99px; background: #c6f432; font-weight: 600; font-size: 7.8pt; letter-spacing: 0.04em; text-transform: uppercase; }
+  h2 { font-family: "Geist Mono", Consolas, monospace; font-size: 8pt; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5a8f00; margin: 13px 0 5px; padding-bottom: 3px; border-bottom: 1px solid #d9dce1; }
+  p { margin: 0 0 4px; }
+  ul { margin: 0; padding-left: 14px; }
+  li { margin: 0 0 2.6px; }
+  li::marker { color: #5a8f00; }
+  strong { font-weight: 600; }
+  .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 6px 0 2px; }
+  .stats div { border: 1px solid #d9dce1; border-radius: 6px; padding: 5px 7px; }
+  .stats b { display: block; font-size: 13pt; font-weight: 700; letter-spacing: -0.01em; line-height: 1.1; }
+  .stats span { font-size: 7.4pt; color: #555b64; line-height: 1.25; display: block; }
+  .skills { display: grid; grid-template-columns: 118px 1fr; gap: 2px 10px; }
+  .skills dt { font-weight: 600; }
+  .skills dd { margin: 0; }
+  .role { margin-top: 7px; break-inside: avoid; }
+  .role__head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 2px; }
+  .role__head h3 { font-size: 10pt; font-weight: 600; margin: 0; }
+  .role__head span { font-size: 8pt; color: #555b64; white-space: nowrap; }
+  .org { display: flex; justify-content: space-between; align-items: baseline; margin-top: 4px; }
+  .org b { font-size: 11pt; }
+  .note { color: #3b4048; }
+  .deploys { font-size: 8.6pt; color: #3b4048; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; }
+  .keep { break-inside: avoid; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Prateek Garg<span>.</span></h1>
+    <p class="title">Lead Software Engineer · Java · Flutter / Android · Full-stack</p>
+  </div>
+  <div class="contact mono">
+    <a href="https://prateekgarg.dev">prateekgarg.dev</a><br>
+    <a href="mailto:garg.prateek2209@gmail.com">garg.prateek2209@gmail.com</a><br>
+    <a href="https://linkedin.com/in/prtk-grg">linkedin.com/in/prtk-grg</a><br><a href="https://github.com/prtkgrg">github.com/prtkgrg</a><br>
+    <span class="open">Open to lead roles in the UK</span>
+  </div>
+</header>
+
+<h2>Profile</h2>
+<p>Hands-on lead engineer with <strong>9 years</strong> architecting offline-first Java and Flutter systems at national scale. Within a 40-engineer group I <strong>lead a team of 10+ engineers</strong> and own delivery end to end, from government requirements to production. I designed the configuration-driven architecture behind MEDplat, an open-source, FHIR-compliant health platform and registered Digital Public Good, led its Android-to-Flutter migration, and built voice and on-device AI workflows. I still write code every day.</p>
+
+<div class="stats">
+  <div><b>300M</b><span>citizens reached by systems I architected</span></div>
+  <div><b>250K+</b><span>health workers using it daily</span></div>
+  <div><b>12</b><span>deployments on four continents</span></div>
+  <div><b>30×</b><span>faster sync (5 min → 10 s)</span></div>
+  <div><b>10×</b><span>faster data entry with voice / AI</span></div>
+</div>
+
+<h2>Technical skills</h2>
+<dl class="skills">
+  <dt>Languages</dt><dd>Java, Dart, Kotlin, SQL</dd>
+  <dt>Backend</dt><dd>Spring Boot, Spring Security, REST APIs, Microservices, JPA / Hibernate, Swagger / OpenAPI</dd>
+  <dt>Mobile</dt><dd>Flutter, Android, Bloc, GetIt, Clean &amp; Modular Architecture, Offline-first, Multi-flavor builds, pub.dev packages</dd>
+  <dt>Web</dt><dd>Angular and React (technical guidance for the web teams)</dd>
+  <dt>Data</dt><dd>PostgreSQL, SQLite, Flyway, query optimisation (CTEs), data sync &amp; conflict resolution</dd>
+  <dt>Architecture</dt><dd>System design, configuration-driven systems, dynamic form &amp; rule engines, FHIR (DHIS2, CommCare), encryption, RBAC, audit logging</dd>
+  <dt>Applied AI</dt><dd>Whisper speech-to-text, on-device Qwen LLM (offline), Gemini (online), voice-driven data entry</dd>
+  <dt>DevOps</dt><dd>Git, Jenkins CI/CD, Docker, AWS, Firebase (Analytics, Crashlytics)</dd>
+  <dt>Leadership</dt><dd>Team leadership, hiring &amp; technical interviews, mentoring, code-review standards, sprint planning, release management, stakeholder management, Agile / Scrum</dd>
+</dl>
+
+<h2>Experience</h2>
+<div class="org"><b>Argusoft India Ltd</b><span class="mono" style="font-size:8pt;color:#555b64">Gandhinagar, India · 2017 – present</span></div>
+<p class="note">MEDplat: open-source, FHIR-compliant public-health platform and registered Digital Public Good, used daily by 250,000+ health workers serving 300 million citizens and recording 1M+ health services a day.</p>
+
+<div class="role">
+  <div class="role__head"><h3>Group Lead, Technology</h3><span class="mono">2023 – present</span></div>
+  <ul>
+    <li>Lead a team of <strong>10+ engineers</strong> across backend, mobile and web within a 40-engineer group. Run hiring, onboarding, code-review standards, sprint planning and releases; grew 10+ engineers into implementation owners.</li>
+    <li>Designed the <strong>configuration-driven form configurator and renderer</strong>, so new deployments need no code changes: a new state in a week, a new form in a day. This is what scaled the platform to <strong>12 deployments</strong>.</li>
+    <li>Own delivery for government and NGO clients (Government of Gujarat, UP NHM, Daman &amp; Diu, Zambia MoH), consistently meeting rollout deadlines while managing scope and production releases.</li>
+    <li>Led the <strong>Android-to-Flutter migration</strong> to a single codebase with a shared design system, multi-flavor builds and Jenkins pipelines, so every deployment releases independently.</li>
+    <li>Built <strong>voice and AI-assisted form filling</strong> (Whisper, on-device Qwen offline, Gemini online), cutting form entry from 3–4 minutes to about 20 seconds.</li>
+    <li>Delivered a <strong>FHIR-compliant, interoperable architecture</strong> on Google's Open Health Stack (Android FHIR SDK), shaped by field research with Sewa Rural. Encryption, RBAC and audit logging throughout; government data on-premise, NGO data on AWS.</li>
+    <li>Built PostgreSQL immunisation-inventory and product modules that replaced manual stock reconciliation with real-time tracking; published reusable Dart / Flutter packages to pub.dev.</li>
+    <li>Guide the Angular and React teams on form configuration and rule evaluation, keeping backend schemas, web and the Flutter engine aligned across releases.</li>
+  </ul>
+</div>
+
+<div class="role">
+  <div class="role__head"><h3>Lead Solution Analyst</h3><span class="mono">2022 – 2023</span></div>
+  <ul>
+    <li>Owned the <strong>Uttar Pradesh (eKavach)</strong> implementation end to end, from client calls and requirements to production rollout: the platform's largest deployment, serving <strong>220 million citizens</strong>.</li>
+    <li>Designed Spring Boot services with Spring Security and architected the Flutter app (Bloc, GetIt) with offline data models, sync and conflict resolution for low-connectivity field use.</li>
+    <li>Cut data-sync time from <strong>5 minutes to about 10 seconds</strong> by redesigning the sync strategy and tuning the heaviest queries.</li>
+  </ul>
+</div>
+
+<div class="role">
+  <div class="role__head"><h3>Senior Programmer Analyst</h3><span class="mono">2020 – 2022</span></div>
+  <ul>
+    <li>Built a fully dynamic <strong>learning management system</strong> (web course builder and mobile player for every media type) that trained about <strong>175,000 health workers</strong>; it also powers Amma Kosam in Telangana.</li>
+    <li>Developed the offline-first Android app and dynamic form engine on SQLite for the first state rollouts, the foundation of the later configuration-driven platform.</li>
+    <li>Optimised SQLite storage for performance and reliability on low-end field devices.</li>
+  </ul>
+</div>
+
+<div class="role">
+  <div class="role__head"><h3>Programmer Analyst</h3><span class="mono">2017 – 2020</span></div>
+  <ul>
+    <li>Built the platform's early backend: Java and Spring services with JMS messaging, JSP and JDBC. Supported the first production deployments and improved their stability.</li>
+  </ul>
+</div>
+
+<div class="keep">
+<h2>Deployments I have architected or delivered</h2>
+<p class="deploys"><strong>eKavach</strong>, Uttar Pradesh (220M citizens) · <strong>TeCHO+</strong>, Gujarat (65M; 99% of registered children immunised) · <strong>i-MoMCARE</strong>, Cambodia (Gates-funded RCT with NUS, peer-reviewed in BMJ Digital Health &amp; AI, 2026) · <strong>CHiP</strong>, Zambia · <strong>JamVax</strong>, Jamaica's national electronic immunisation registry · <strong>DDD-PHMP</strong>, Daman &amp; Diu · <strong>ImTeCHO</strong>, Sewa Rural · <strong>Saath</strong>, Bahaar Foundation · <strong>DigiSakhi</strong>, Seva Mandir · <strong>OASIS</strong>, LSHTM antimicrobial-resistance project · <strong>Amma Kosam</strong>, Telangana · <strong>Impact Health</strong>, Nigeria</p>
+</div>
+
+<div class="two keep">
+  <div>
+    <h2>Education</h2>
+    <p><strong>B.Tech, Computer Science &amp; Engineering</strong>, Distinction<br>Gandhi Institute of Technological Advancement, Odisha · 2013 – 2017<br><span class="note">Taught in English</span></p>
+  </div>
+  <div>
+    <h2>Side project</h2>
+    <p><strong>Shelfmark</strong> (Flutter): tracks reading progress across PDF collections, with per-series libraries, resume where you left off, reading streaks and backup / restore. <span class="mono" style="font-size:8pt">github.com/prtkgrg/shelfmark</span></p>
+  </div>
+</div>
+
+<h2>Recommendation</h2>
+<p class="note">“Prateek approaches problems thoughtfully and takes responsibility for delivering quality solutions. He remains calm under pressure…” <strong>Kunjan Patel</strong>, Group Director (Technology), Argusoft</p>
+</body>
+</html>

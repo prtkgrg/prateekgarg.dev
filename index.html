@@ -89,6 +89,9 @@
         </svg>
       </button>
       <a class="nav__cta" href="#contact" data-magnetic><span>Let's talk</span></a>
+      <button class="menu-btn" type="button" popovertarget="menu" aria-label="Open menu" aria-controls="menu">
+        <span></span><span></span>
+      </button>
     </div>
   </header>
 
@@ -128,6 +131,7 @@
           <div class="hero__meta reveal-up">
             <span class="mono">9 years · lead 10+ in a 40-engineer group</span>
             <span class="mono">Java · Spring Boot · Flutter · Android</span>
+            <a class="mono hero__cv" href="cv.pdf" download="Prateek-Garg-CV.pdf" data-cursor="cv">Download CV <span aria-hidden="true">↓</span></a>
           </div>
         </div>
       </div>
@@ -531,6 +535,7 @@
            aria-controls="talk">
           <span>Get in touch</span>
         </a>
+        <a class="contact__cv" href="cv.pdf" download="Prateek-Garg-CV.pdf" data-cursor="pdf">Download CV <span aria-hidden="true">↓</span></a>
         <ul class="contact__links">
           <li><a href="mailto:garg.prateek2209@gmail.com" data-cursor="email">garg.prateek2209@gmail.com <span aria-hidden="true">↗</span></a></li>
           <li><a href="https://linkedin.com/in/prtk-grg" target="_blank" rel="noopener" data-cursor="open">LinkedIn <span aria-hidden="true">↗</span></a></li>
@@ -539,6 +544,25 @@
       </div>
     </section>
   </main>
+
+  <!-- Mobile menu (native popover) -->
+  <div class="menu" id="menu" popover aria-label="Menu">
+    <div class="menu__top">
+      <span class="nav__logo">PG<span>.</span></span>
+      <button type="button" class="menu__close" popovertarget="menu" popovertargetaction="hide" aria-label="Close menu">✕</button>
+    </div>
+    <nav class="menu__links" aria-label="Mobile">
+      <a href="#about"><span class="mono">01</span>About</a>
+      <a href="#expertise"><span class="mono">02</span>Expertise</a>
+      <a href="#work"><span class="mono">03</span>Work</a>
+      <a href="#journey"><span class="mono">05</span>Journey</a>
+      <a href="#contact"><span class="mono">08</span>Contact</a>
+    </nav>
+    <div class="menu__foot">
+      <a class="menu__cv" href="cv.pdf" download="Prateek-Garg-CV.pdf">Download CV <span aria-hidden="true">↓</span></a>
+      <span class="mono">Open to lead roles in the UK</span>
+    </div>
+  </div>
 
   <!-- Contact popover (native popover API: Esc and click-outside close it) -->
   <div class="talk" id="talk" popover role="dialog" aria-labelledby="talk-title">
@@ -567,6 +591,14 @@
       <span class="talk__icon talk__icon--in" aria-hidden="true">in</span>
       <span class="talk__text"><strong>Message on LinkedIn</strong><small>linkedin.com/in/prtk-grg</small></span>
       <span class="talk__arrow" aria-hidden="true">↗</span>
+    </a>
+
+    <a class="talk__item" href="cv.pdf" download="Prateek-Garg-CV.pdf">
+      <span class="talk__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>
+      </span>
+      <span class="talk__text"><strong>Download CV</strong><small>PDF · 2 pages</small></span>
+      <span class="talk__arrow" aria-hidden="true">↓</span>
     </a>
 
     <button type="button" class="talk__close" popovertarget="talk" popovertargetaction="hide" aria-label="Close">✕</button>

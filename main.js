@@ -136,6 +136,30 @@
   });
 
   /* ---------------------------------------------------------
+     Mobile menu (native popover): pause scrolling while open,
+     close before jumping to a section
+     --------------------------------------------------------- */
+  const menu = document.getElementById('menu');
+  const menuBtn = document.querySelector('.menu-btn');
+  if (menu && menu.showPopover) {
+    menu.addEventListener('toggle', (e) => {
+      const open = e.newState === 'open';
+      menuBtn.setAttribute('aria-expanded', open);
+      if (lenis) open ? lenis.stop() : lenis.start();
+    });
+    // Capture on the container runs before the link's own scroll handler,
+    // so Lenis is running again when that handler calls scrollTo
+    menu.querySelector('.menu__links').addEventListener('click', (e) => {
+      if (!e.target.closest('a')) return;
+      if (lenis) lenis.start();
+      menu.hidePopover();
+    }, { capture: true });
+    matchMedia('(min-width: 861px)').addEventListener('change', (e) => {
+      if (e.matches && menu.matches(':popover-open')) menu.hidePopover();
+    });
+  }
+
+  /* ---------------------------------------------------------
      "Let's talk" popover
      --------------------------------------------------------- */
   const talk = document.getElementById('talk');
