@@ -536,6 +536,7 @@ strong { font-weight: 600; }
   border: 1px solid var(--line); border-radius: 28px; background: var(--surface);
   transition: border-color 0.3s, translate 0.5s var(--ease);
 }
+.side + .side { margin-top: 16px; }
 .side:hover { border-color: var(--accent-text); translate: 0 -4px; }
 .side__tag { color: var(--accent-text); margin: 0; }
 .side h3 { margin: 0 0 8px; font-size: clamp(1.6rem, 3vw, 2.6rem); letter-spacing: -0.04em; font-weight: 600; }

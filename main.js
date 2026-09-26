@@ -780,7 +780,9 @@
       });
     });
 
-    gsap.from('.side', { y: 60, autoAlpha: 0, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: '.side', start: 'top 88%' } });
+    gsap.utils.toArray('.side').forEach((card) => {
+      gsap.from(card, { y: 60, autoAlpha: 0, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: card, start: 'top 88%' } });
+    });
     gsap.from('.contact__roles li', { y: 20, autoAlpha: 0, stagger: 0.06, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: '.contact__roles', start: 'top 90%' } });
 
     // Globe entrance
